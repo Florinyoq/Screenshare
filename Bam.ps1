@@ -38,14 +38,11 @@ Clear-Host
 
 Write-Host "";
 Write-Host "";
-Write-Host -ForegroundColor Red "   ██████╗ █████╗███╗   ███╗    ██╗  ███████████╗   █████████";
-Write-Host -ForegroundColor Red "   ██╔══████╔══██████╗ ████║    ██║ ██╔██╔════╚██╗ ██╔██╔════╝";
-Write-Host -ForegroundColor Red "   ██████╔█████████╔████╔██║    █████╔╝█████╗  ╚████╔╝███████╗";
-Write-Host -ForegroundColor Red "   ██╔══████╔══████║╚██╔╝██║    ██╔═██╗██╔══╝   ╚██╔╝ ╚════██║";
-Write-Host -ForegroundColor Red "   ██████╔██║  ████║ ╚═╝ ██║    ██║  █████████╗  ██║  ███████║";
-Write-Host -ForegroundColor Red "   ╚═════╝╚═╝  ╚═╚═╝     ╚═╝    ╚═╝  ╚═╚══════╝  ╚═╝  ╚══════╝";
+Write-Host -ForegroundColor Red " ░█░█░█▀▀░█░░░█▀▀░█▀█░█▄█░█▀▀░░░█▀▀░█░░░█▀█░█▀▄░▀█▀░█▀█░█░█░█▀█
+Write-Host -ForegroundColor Red " ░█▄█░█▀▀░█░░░█░░░█░█░█░█░█▀▀░░░█▀▀░█░░░█░█░█▀▄░░█░░█░█░░█░░█░█
+Write-Host -ForegroundColor Red " ░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░░░▀░░░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░░▀░░▀▀▀
 Write-Host "";
-Write-Host -ForegroundColor Blue "   BAM executions " -NoNewLine
+Write-Host -ForegroundColor Blue "   BAM executions checker " -NoNewLine
 Write-Host "";
 
 function Test-Admin {;$currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent());$currentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator);}
