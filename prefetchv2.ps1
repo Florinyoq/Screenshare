@@ -28,7 +28,6 @@ Start-Sleep -Seconds 2
 # Collect all .pf files including hidden ones
 $files = Get-ChildItem -Path $directory -Filter *.pf -Force
 
-$hashTable = @{}
 $suspiciousFiles = @{}
 
 foreach ($file in $files) {
@@ -54,29 +53,8 @@ foreach ($file in $files) {
             $suspiciousFiles[$file.Name] = "$($file.Name) is not a valid prefetch file"
         }
 
-        # Compute file hash and check for duplicates
-        $hash = Get-FileHash -Path $file.FullName -Algorithm SHA256
-        if ($hashTable.ContainsKey($hash.Hash)) {
-            $hashTable[$hash.Hash].Add($file.Name)
-        } else {
-            $hashTable[$hash.Hash] = [System.Collections.Generic.List[string]]::new()
-            $hashTable[$hash.Hash].Add($file.Name)
-        }
     } catch {
         Write-Host "Error reading file: $($file.FullName) - $($_.Exception.Message)" -ForegroundColor Red
-    }
-}
-
-# Identify duplicate hashes
-$repeatedHashes = $hashTable.GetEnumerator() | Where-Object { $_.Value.Count -gt 1 }
-
-if ($repeatedHashes) {
-    foreach ($entry in $repeatedHashes) {
-        foreach ($file in $entry.Value) {
-            if (-not $suspiciousFiles.ContainsKey($file)) {
-                $suspiciousFiles[$file] = "$file has a duplicate hash (possible tampering)"
-            }
-        }
     }
 }
 
@@ -92,4 +70,3 @@ if ($suspiciousFiles.Count -gt 0) {
 }
 
 Write-Host ""
-
