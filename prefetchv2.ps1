@@ -29,6 +29,7 @@ Start-Sleep -Seconds 2
 $files = Get-ChildItem -Path $directory -Filter *.pf -Force
 
 $suspiciousFiles = @{}
+$hashTable = @{}
 
 foreach ($file in $files) {
     try {
@@ -53,8 +54,30 @@ foreach ($file in $files) {
             $suspiciousFiles[$file.Name] = "$($file.Name) is not a valid prefetch file"
         }
 
+        # Hash file to detect modifications
+        $hash = Get-FileHash -Path $file.FullName -Algorithm SHA256
+        if ($hashTable.ContainsKey($hash.Hash)) {
+            $hashTable[$hash.Hash].Add($file.Name)
+        } else {
+            $hashTable[$hash.Hash] = [System.Collections.Generic.List[string]]::new()
+            $hashTable[$hash.Hash].Add($file.Name)
+        }
+
     } catch {
         Write-Host "Error reading file: $($file.FullName) - $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+# Detect modified .pf files based on duplicate hashes
+$repeatedHashes = $hashTable.GetEnumerator() | Where-Object { $_.Value.Count -gt 1 }
+
+if ($repeatedHashes) {
+    foreach ($entry in $repeatedHashes) {
+        foreach ($file in $entry.Value) {
+            if (-not $suspiciousFiles.ContainsKey($file)) {
+                $suspiciousFiles[$file] = "$file was modified with type or echo"
+            }
+        }
     }
 }
 
