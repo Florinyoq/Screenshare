@@ -54,12 +54,6 @@ foreach ($file in $files) {
             $suspiciousFiles[$file.Name] = "$($file.Name) is not a valid prefetch file"
         }
 
-        # Check last modified time
-        $modificationTime = $file.LastWriteTime
-        if ($modificationTime -gt (Get-Date).AddMinutes(-30)) {
-            $suspiciousFiles[$file.Name] = "$($file.Name) was modified recently at $modificationTime"
-        }
-
         # Compute file hash and check for duplicates
         $hash = Get-FileHash -Path $file.FullName -Algorithm SHA256
         if ($hashTable.ContainsKey($hash.Hash)) {
