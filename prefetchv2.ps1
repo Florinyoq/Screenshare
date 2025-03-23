@@ -74,7 +74,7 @@ if ($repeatedHashes) {
     foreach ($entry in $repeatedHashes) {
         foreach ($file in $entry.Value) {
             if (-not $suspiciousFiles.ContainsKey($file)) {
-                $suspiciousFiles[$file] = "$file was modified or duplicated"
+                $suspiciousFiles[$file] = "$file has a duplicate hash (possible tampering)"
             }
         }
     }
@@ -92,3 +92,4 @@ if ($suspiciousFiles.Count -gt 0) {
 }
 
 Write-Host ""
+
